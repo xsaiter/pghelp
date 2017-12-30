@@ -57,7 +57,7 @@ public:
 
   bool is_tuples_ok() const { return (PQresultStatus(r_) == PGRES_TUPLES_OK); }
 
-  int count() const throw() { return PQntuples(r_); }
+  int count() const { return PQntuples(r_); }
 
   const char *error_message() const { return PQresultErrorMessage(r_); }
 

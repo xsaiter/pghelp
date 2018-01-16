@@ -23,11 +23,11 @@ public:
 
   ~pg_conn_s() { PQfinish(c_); }
 
-  bool is_ok() const { return PQstatus(c_) == CONNECTION_OK; }
+  bool is_ok() const noexcept { return PQstatus(c_) == CONNECTION_OK; }
 
-  const char *error_message() const { return PQerrorMessage(c_); }
+  const char *error_message() const noexcept { return PQerrorMessage(c_); }
 
-  PGconn *get() const { return c_; }
+  PGconn *get() const noexcept { return c_; }
 
 private:
   PGconn *c_;
@@ -43,23 +43,29 @@ public:
 
   ~pg_result_s() { PQclear(r_); }
 
-  const char *get_value(int tup_num, int field_num) const {
+  const char *get_value(int tup_num, int field_num) const noexcept {
     return PQgetvalue(r_, tup_num, field_num);
   }
 
-  bool is_null(int tup_num, int field_num) const {
+  bool is_null(int tup_num, int field_num) const noexcept {
     return PQgetisnull(r_, tup_num, field_num);
   }
 
-  PGresult *get() const { return r_; }
+  PGresult *get() const noexcept { return r_; }
 
-  bool is_command_ok() { return PQresultStatus(r_) == PGRES_COMMAND_OK; }
+  bool is_command_ok() const noexcept {
+    return PQresultStatus(r_) == PGRES_COMMAND_OK;
+  }
 
-  bool is_tuples_ok() const { return (PQresultStatus(r_) == PGRES_TUPLES_OK); }
+  bool is_tuples_ok() const noexcept {
+    return (PQresultStatus(r_) == PGRES_TUPLES_OK);
+  }
 
-  int count() const { return PQntuples(r_); }
+  int count() const noexcept { return PQntuples(r_); }
 
-  const char *error_message() const { return PQresultErrorMessage(r_); }
+  const char *error_message() const noexcept {
+    return PQresultErrorMessage(r_);
+  }
 
 private:
   PGresult *r_;
